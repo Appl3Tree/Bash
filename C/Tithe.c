@@ -63,7 +63,7 @@ int main( void )
 		printf( "Tithe 10%%:\t\t%d.%d\n", tithe / 100, tithe % 100 );
 	}
 	
-	//	Subtract Titeh from the grossIncomePennies.
+	//	Subtract Tithe from the grossIncomePennies.
 	grossIncomePennies -= tithe;
 	
 	//	Print out the remaining income. If...else statement necessary to ensure the result has two decimal places.
