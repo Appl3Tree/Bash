@@ -45,10 +45,10 @@ int main( void )
 	//	Perform arithmetic to determine the firstFruits in pennies then print out the result of First Fruits.
 	firstFruits = floor( grossIncomePennies * firstFruitsPercent );
 	//	If...else statement necessary to ensure the result has two decimal places.
-	if ( firstFruits % 100 == 0 ) {
-		printf( "First Fruits 2.5%%:\t%d.%d0\n", firstFruits / 100, firstFruits % 100 );
+	if ( firstFruits % 100 < 10 ) {
+		printf( "First Fruits 2.5%%:\t$%d.%d0\n", firstFruits / 100, firstFruits % 100 );
 	} else {
-		printf( "First Fruits 2.5%%:\t%d.%d\n", firstFruits / 100, firstFruits % 100 );
+		printf( "First Fruits 2.5%%:\t$%d.%d\n", firstFruits / 100, firstFruits % 100 );
 	}
 	
 	//	Subtract First Fruits from the grossIncomePennies.
@@ -57,10 +57,10 @@ int main( void )
 	//	Perform arithmetic to determine the tithe in pennies then print out the result of Tithe.
 	tithe = floor( grossIncomePennies * tithePercent );
 	//	If...else statement necessary to ensure the result has two decimal places.
-	if ( tithe % 100 == 0 ) {
-		printf( "Tithe 10%%:\t\t%d.%d0\n", tithe / 100, tithe % 100 );
+	if ( tithe % 100 < 10 ) {
+		printf( "Tithe 10%%:\t\t$%d.%d0\n", tithe / 100, tithe % 100 );
 	} else {
-		printf( "Tithe 10%%:\t\t%d.%d\n", tithe / 100, tithe % 100 );
+		printf( "Tithe 10%%:\t\t$%d.%d\n", tithe / 100, tithe % 100 );
 	}
 	
 	//	Subtract Tithe from the grossIncomePennies.
@@ -68,8 +68,8 @@ int main( void )
 	
 	//	Print out the remaining income. If...else statement necessary to ensure the result has two decimal places.
 	if ( grossIncomePennies % 100 == 0 ) {
-		printf( "Remaining income:\t%d.%d0\n", grossIncomePennies / 100, grossIncomePennies % 100 );
+		printf( "Remaining income:\t$%d.%d0\n", grossIncomePennies / 100, grossIncomePennies % 100 );
 	} else {
-		printf( "Remaining income:\t%d.%d\n", grossIncomePennies / 100, grossIncomePennies % 100 );
+		printf( "Remaining income:\t$%d.%d\n", grossIncomePennies / 100, grossIncomePennies % 100 );
 	}
 }
