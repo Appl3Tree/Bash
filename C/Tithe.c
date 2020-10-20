@@ -18,6 +18,7 @@ int main( void )
 //	double thirdTithePercent;	Will be used later.
 	double grossIncome;
 	double nikiSalary;
+	int rateChange;
 	int hoursWorked;
 	int firstFruits;
 	int tithe;
@@ -30,6 +31,7 @@ int main( void )
 //	thirdTithePercent = 0.033;	Will be used later.
 	grossIncome = 0.00;
 	nikiSalary = 1630.00;
+	rateChange = 0;
 	hoursWorked = 0;
 	firstFruits = 0;
 	tithe = 0;
@@ -42,6 +44,14 @@ int main( void )
 	printf( "%s", "Enter the number of hours worked this month:\t" );
 	scanf( "%d", &hoursWorked );
 
+	//	Ask if hourly rate has changed.
+	printf( "Has your hourly rate changed from $%.4lf per hour? (1 = no or 2 = yes): ", hourlyRate );
+	scanf( "%d", &rateChange );
+	if ( rateChange == 2 )
+	{
+		printf( "%s", "Enter what it has changed to per hour ($XX.XX):\t$" );
+		scanf( "%lf", &hourlyRate );
+	}
 	grossIncome = (hourlyRate * hoursWorked) + nikiSalary;
 
 	//	Blank line for separation.
@@ -88,4 +98,17 @@ int main( void )
 	} else {
 		printf( "Remaining income:\t\t$%d.%d\n", grossIncomePennies / 100, grossIncomePennies % 100 );
 	}
+
+	//	If rateChange was 2, then inform user to update the hourlyRate in
+	//	the source code.
+	if ( rateChange == 2 )
+	{
+		puts( "" );
+		printf( "%s", "********************\n" );
+		printf( "%s", "********NOTE********\n" );
+		printf( "%s", "********************\n" );
+		printf( "%s", "\nPlease update the source code to have your new hourly rate.\n" );
+	}
+	//	Enter a blank line at the end for readability.
+	puts( "" );
 }
