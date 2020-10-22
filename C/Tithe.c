@@ -18,6 +18,7 @@ int main( void )
 //	double thirdTithePercent;	Will be used later.
 	double grossIncome;
 	double nikiSalary;
+//	double taxRate;			Will be used later.
 	int rateChange;
 	int hoursWorked;
 	int firstFruits;
@@ -31,6 +32,7 @@ int main( void )
 //	thirdTithePercent = 0.033;	Will be used later.
 	grossIncome = 0.00;
 	nikiSalary = 1630.00;
+//	taxRate = 0.253026227303295;	Will be used later.
 	rateChange = 0;
 	hoursWorked = 0;
 	firstFruits = 0;
