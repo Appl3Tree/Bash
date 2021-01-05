@@ -27,9 +27,11 @@ int main( void )
 	double hourlyRate;
 	double incomeFromNiki;
 	double grossIncome;
+	double netIncome;
 	double firstFruitsPercent;
 	double tithePercent;
 //	double thirdTithePercent;	Will be used later
+	double taxRate;
 	
 	//	Initialize varible(s).
 	hoursWorked = 0;
@@ -40,9 +42,11 @@ int main( void )
 	hourlyRate  = 19.8265;
 	incomeFromNiki = 1630.00;
 	grossIncome = 0.00;
+	netIncome = 0.00;
 	firstFruitsPercent = 0.025;
 	tithePercent = 0.10;
 //	thirdTithePercent = 0.033; 	Will be used later.
+	taxRate = 0.743720525559226;
 
 	//	Blank line for readability.
 	puts( "" );
@@ -68,7 +72,9 @@ int main( void )
 	//	Ask if there are multiple incomes.
 
 	//	For now, manually add multiple incomes to grossIncome.
+	netIncome = ( hourlyRate * hoursWorked ) * taxRate;
 	grossIncome = ( hourlyRate * hoursWorked ) + incomeFromNiki;
+	
 
 	//	Blank line for readability.
 	puts( "" );
@@ -115,7 +121,7 @@ int main( void )
 
 	//	Subtract tithe from grossIncome.
 	grossIncomeInPennies -= tithe;
-
+/*
 	//	Display the remaining income. If...else statement to ensure the decimal has two places.
 	if ( grossIncomeInPennies % 100 < 10 )
 	{
@@ -135,6 +141,10 @@ int main( void )
 		printf( "%s", "********************\n" );
 		printf( "%s", "\nPlease update the source code to have your new hourly rate.\n" );
 	}
+*/
+
+	//	Display the net income.
+	printf( "Net Income:\t\t\t$%.2lf", netIncome );
 
 	//	Blank line for readability.
 	puts( "" );
