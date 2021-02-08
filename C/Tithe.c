@@ -1,171 +1,276 @@
 /*
-	Programmer: Forrest Connelly
-	Program: Tithe
-	Goal: Take in the gross income and output the tithe and first fruits. 
-*/
+ *  Programmer: Forrest Connelly
+ *  Program: Tithing
+ *  Goal: Determine the amount for tithe, first fruits, and third tithe.
+ */
 
-//	Include the standard input/output and math headers.
+// Include the standard input/output and math header.
 #include <stdio.h>
 #include <math.h>
-#define SIZE 2
+#include <stdlib.h>
+#define NIKI 2500.00
+#define NIKI_FIRSTFRUITS 50.00
+#define NIKI_TITHE 190.00
+#define FIRSTFRUITS 0.025
+#define TITHE 0.10
+#define TAX 0.743720525559226
 
-//	Function prototype(s) before the main function.
-int convertToDollars( int pennies );
-int convertToCents( int pennies );
-int convertToPennies( double x );
-double convertToNetIncome( int pennies );
+// Function prototype(s) before the main function.
+char showMenu();
+double getGross(int hoursWorked, double rate);
+int convertToCents(int pennies);
+int convertToDollars(int pennies);
+int convertToPennies(double money);
+void changeHourlyRate(double *rate);
+void convertToDollarsAndCents(int *dollars, int *cents, int pennies);
+void doMenuAction(char userChoice, double *hourlyRate);
+void titheAndFirstFruits(double rate);
 
-//	Every C program needs a main function.
-int main( void )
+ // Every C program needs a main function.
+ int main()
+ {
+    // Declare and initialize variable(s) needed.
+    char userChoice = '0';
+    double hourlyRate = 19.8265;
+     
+    // Display a blank line for readability.
+    puts("");
+
+    //  Call the menu so the user can select what they'd like to do.
+    while (userChoice != '4')
+    {
+        userChoice = showMenu();
+        doMenuAction(userChoice, &hourlyRate);
+        
+        //  Display two blank lines to separate the end of the loop from 
+        // the next iteration or the end of the program's execution.
+        printf("%s", "\n\n");
+    }
+
+    printf("%s", "\n");
+
+    return 0;
+ }
+
+char showMenu()
 {
-	//	Declare variable(s).
-	unsigned int hoursWorked;
-	int firstFruits;
-	int tithe;
-	int grossIncomeInPennies;
-	char rateChange[SIZE];
-	double hourlyRate;
-	double incomeFromNiki;
-	double grossIncome;
-	double netIncome;
-	double firstFruitsPercent;
-	double tithePercent;
-//	double thirdTithePercent;	Will be used later
-	double taxRate;
-	
-	//	Initialize varible(s).
-	hoursWorked = 0;
-	firstFruits = 0;
-	tithe = 0;
-	grossIncomeInPennies = 0;
-	rateChange[0] = ' ';
-	hourlyRate  = 19.8265;
-	incomeFromNiki = 1630.00;
-	grossIncome = 0.00;
-	netIncome = 0.00;
-	firstFruitsPercent = 0.025;
-	tithePercent = 0.10;
-//	thirdTithePercent = 0.033; 	Will be used later.
-	taxRate = 0.743720525559226;
+    //  Declare and initialize variable(s) needed.
+    char userChoice[2] = {'0'};
+    char dump = '0';
 
-	//	Blank line for readability.
-	puts( "" );
+    do
+    {
+        printf("%s", "-----------------------------------------------------------\n");
+        printf("%s", "| 1) Change hourly rate. (default is $19.8265)            |\n");
+        printf("%s", "| 2) Display hourly rate.                                 |\n"); 
+        printf("%s", "| 3) Determine the tithe and first fruits.                |\n");
+        printf("%s", "| 4) Exit.                                                |\n");
+        printf("%s", "-----------------------------------------------------------\n");
+        printf("%s", "Please enter your choice: ");
+        scanf(" %c%c", userChoice, &dump);
 
-	//	Prompt user to enter hours worked this month. Store input in grossIncome.
-	printf( "%s", "Enter the number of hours worked this month:\t" );
-	scanf( "%u", &hoursWorked );
+        //  If the user's option is not 1, 2, or 3, inform them and ask them to enter
+        //  an actual choice.
+        if (userChoice[0] < '1' || userChoice[0] > '4' )
+        {
+            puts("");
+            printf("%s", "That is not a valid option. Please enter 1, 2, 3, or 4.\n");
+        }
+    } while (userChoice[0] < '1' || userChoice[0] > '4');
 
-	//	Ask if the hourly rate has changed.
-	printf( "Has your hourly rate changed from $%.4lf per hour? (y/n): ", hourlyRate );
-	scanf( "%1s", rateChange );
-	switch ( rateChange[0] )
-	{
-		case 'Y':
-		case 'y':
-			printf( "%s", "Enter what it has changed to per hour ($XX.XX):\t$" );
-			scanf( "%lf", &hourlyRate );
-			break;
-		default:
-			break;
-	}
-	
-	//	Ask if there are multiple incomes.
-
-	//	For now, manually add multiple incomes to grossIncome.
-	netIncome = ( hourlyRate * hoursWorked ) * taxRate;
-	grossIncome = ( hourlyRate * hoursWorked ) + incomeFromNiki;
-	
-
-	//	Blank line for readability.
-	puts( "" );
-
-	//	Print out Niki's and my gross incomes.
-	printf( "Forrest's Gross Monthly Income:\t$%.2lf\n", grossIncome - incomeFromNiki );
-	printf( "Niki's Gross Monthly Income:\t$%.2lf\n", incomeFromNiki );
-	printf( "Combined Gross Income:\t\t$%.2lf\n", grossIncome );
-
-	//	Blank line for readability.
-	puts( "" );
-
-	//	Turn the grossIncome into pennies for proper money handling.
-	grossIncomeInPennies = convertToPennies( grossIncome );
-
-	//	Find the First Fruits in pennies.
-	firstFruits = floor( grossIncomeInPennies * firstFruitsPercent );
-
-	//	If...else statement to ensure the decimal has two places.
-	if ( firstFruits % 100 < 10 )
-	{
-		printf( "First Fruits 2.5%%:\t\t$%d.0%d\n", convertToDollars( firstFruits ), convertToCents( firstFruits ) );
-	}
-	else
-	{
-		printf( "First Fruits 2.5%%:\t\t$%d.%d\n", convertToDollars( firstFruits ), convertToCents( firstFruits ) );
-	}
-
-	//	Subtract First Fruits from grossIncome.
-	grossIncomeInPennies -= firstFruits;
-
-	//	Find the Tithe in pennies.
-	tithe = floor( grossIncomeInPennies * tithePercent );
-
-	//	If...else statement to ensure the decimal has two places.
-	if ( tithe % 100 < 10 )
-	{
-		printf( "Tithe 10%%:\t\t\t$%d.0%d\n", convertToDollars( tithe ), convertToCents( tithe ) );
-	}
-	else
-	{
-		printf( "Tithe 10%%:\t\t\t$%d.%d\n", convertToDollars( tithe ), convertToCents( tithe ) );
-	}
-
-	//	Subtract tithe from grossIncome.
-	grossIncomeInPennies -= tithe;
-/*
-	//	Display the remaining income. If...else statement to ensure the decimal has two places.
-	if ( grossIncomeInPennies % 100 < 10 )
-	{
-		printf( "Remaining gross income:\t\t$%d.0%d\n", convertToDollars( grossIncomeInPennies ), convertToCents( grossIncomeInPennies ) );
-	}
-	else
-	{
-		printf( "Remaining gross income:\t\t$%d.%d\n", convertToDollars( grossIncomeInPennies ), convertToCents( grossIncomeInPennies ) );
-	}
-
-	//	If the rateChange has changed, inform the user to update the hourlyRate in the source code.
-	if ( rateChange[0] == 'y' || rateChange[0] == 'Y' )
-	{
-		puts( "" );
-		printf( "%s", "********************\n" );
-		printf( "%s", "********NOTE********\n" );
-		printf( "%s", "********************\n" );
-		printf( "%s", "\nPlease update the source code to have your new hourly rate.\n" );
-	}
-*/
-
-	//	Display the net income.
-	printf( "Net Income:\t\t\t$%.2lf", netIncome );
-
-	//	Blank line for readability.
-	puts( "" );
+    return userChoice[0];
 }
 
-int convertToDollars( int pennies )
+double getGross(int hoursWorked, double rate)
 {
-	return pennies / 100;
+    double grossIncome = hoursWorked * rate;
+
+    return grossIncome;
 }
 
-int convertToCents( int pennies )
+int convertToCents(int pennies)
 {
-	return pennies % 100;
+    int cents = 0;
+
+    cents = pennies % 100;
+    return cents;
 }
 
-int convertToPennies( double money )
+int convertToDollars(int pennies)
 {
-	return floor( money * 100 );
+    int dollars = 0;
+
+    dollars = pennies / 100;
+    return dollars;
 }
 
-double convertToNetIncome( int pennies )
+
+int convertToPennies(double money)
 {
-	return 0;
+    //  Declare and initialize variable(s) needed.
+    int pennies = 0;
+
+    //  Set the variable "pennies" to the total money paramater multiplied by 100.
+    //  Floor this result to remove decimal values.
+    pennies = floor(money * 100);
+    return pennies;
+}
+
+void changeHourlyRate(double *rate)
+{
+    printf("%s", "Please enter the new hourly rate: ");
+    scanf("%lf", &*rate);
+}
+
+void convertToDollarsAndCents(int *dollars, int *cents, int pennies)
+{
+    *dollars = convertToDollars(pennies);
+    *cents = convertToCents(pennies);
+}
+
+void doMenuAction(char userChoice, double *hourlyRate)
+{
+    switch (userChoice)
+    {
+        case '1':
+            changeHourlyRate(hourlyRate);
+            printf("%.4lf", *hourlyRate);
+            break;
+        
+        case '2':
+            printf("Current hourly rate is set to $%.4lf.\n", *hourlyRate);
+            break;
+            
+        case '3':
+            titheAndFirstFruits(*hourlyRate);
+            break;
+
+        case '4':
+            exit(0);
+            break;
+           
+        default:
+            printf("%s", "Uh oh, something went wrong. Please try again!\n");
+            exit(1);
+            break;
+    }
+}
+
+void titheAndFirstFruits(double rate)
+{
+    //  Declare and initialize variable(s) needed.
+    char continueChoice[2] = {'n'};
+    char dump = '0';
+    int cents = 0;
+    int dollars = 0;
+    int firstFruits = 0;
+    int hoursWorked = 0;
+    int netIncome = 0;
+    int pennies = 0;
+    int tithe = 0;
+    double grossIncome = 0.00;
+    
+    
+    printf("%s", "Please enter the amount of hours worked this month: ");
+    scanf("%d%c", &hoursWorked, &dump);
+    puts("");
+
+    grossIncome = getGross(hoursWorked, rate);
+
+    //  Display gross incomes.
+    printf("Forrest's Gross Monthly Income:\t\t$%.2lf\n", grossIncome);
+    printf("Niki's Gross Monthly Income:\t\t$%.2lf\n", NIKI);
+    printf("Combined Gross Income:\t\t\t$%.2lf\n\n", grossIncome + NIKI);
+
+    //  Turn the gross income into pennies to make accurate calculations
+    //  of money.
+    pennies = convertToPennies(grossIncome);
+
+    //  Find the amount removed for taxes.
+    netIncome = pennies * TAX;
+
+    //  Convert the penny value of gross income into net income.
+    convertToDollarsAndCents(&dollars, &cents, pennies);
+    
+
+    //  Perform arithmetic to find the first fruits.
+    firstFruits = floor(pennies * FIRSTFRUITS);
+
+    //  Subtract the first fruits from the total gross income so that the
+    //  correct % will be set to the tithe.
+    pennies -= firstFruits; 
+
+    //  Perform arithmetic to find the tithe.
+    tithe = floor(pennies * TITHE);
+
+    //  Subtract the first fruits from the total gross income so that the
+    //  correct % will be set to the tithe.
+    pennies -= tithe; 
+
+    //  Convert the penny value  of first fruits into a "dollar" and "cent"
+    //  value.
+    convertToDollarsAndCents(&dollars, &cents, firstFruits);
+
+    //  Display the First Fruits and Tithe.
+    if (firstFruits % 100 < 10)
+    {
+        printf("First Fruits 2.5%%:\t\t\t$%4d.0%d. Niki's is: $%.2lf.\n", dollars, cents, NIKI_FIRSTFRUITS);
+    }
+    else
+    {
+        printf("First Fruits 2.5%%:\t\t\t$%4d.%d. Niki's is: $%.2lf.\n", dollars, cents, NIKI_FIRSTFRUITS);
+    }
+
+    //  Convert the penny value of tithe into a "dollar" and "cent" value.
+    convertToDollarsAndCents(&dollars, &cents, tithe);
+
+    //  Tithe
+    if (tithe % 100 < 10)
+    {
+        printf("Tithe 10%%:\t\t\t\t$%4d.0%d. Niki's is: $%.2lf.\n", dollars, cents, NIKI_TITHE);
+    }
+    else
+    {
+        printf("Tithe 10%%:\t\t\t\t$%4d.%d. Niki's is: $%.2lf.\n", dollars, cents, NIKI_TITHE);
+    }
+
+    //  Convert the penny value of the net income into a "dollar" and "cent" value.
+    convertToDollarsAndCents(&dollars, &cents, netIncome);
+
+    //  Display the net income.
+    if (netIncome % 100 < 10)
+    {
+        printf("Net Income:\t\t\t\t$%4d.0%d.\n", dollars, cents);
+    }
+    else
+    {
+        printf("Net Income:\t\t\t\t$%4d.%d.\n", dollars, cents);
+    }
+
+    //  Determine if the user wants to continue running the program after
+    //  displaying the previous data.
+    do
+    {
+        printf("%s", "Would you like to continue running the program? (y/n)\n");
+        scanf(" %c%c", continueChoice, &dump);
+    
+        switch (continueChoice[0])
+        {
+            case 'N':
+            case 'n':
+                puts("");
+                exit(0);
+        
+            case 'Y':
+            case 'y':
+                break;
+
+           default:
+               printf("That is not a valid option. Please enter 'y' or 'n'\n");
+               continueChoice[0] = '?';
+               break;
+        }
+    }
+    while (continueChoice[0] == '?');
+    
 }
