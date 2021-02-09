@@ -180,10 +180,10 @@ void titheAndFirstFruits(double rate)
     grossIncome = getGross(hoursWorked, rate);
 
     //  Display gross incomes.
-    printf("Forrest's Gross Monthly Income:%12s%.2lf\n", "$", grossIncome);
-    printf("Niki's Gross Monthly Income:%15s%.2lf\n", "$", NIKI);
+    printf("Forrest's Gross Monthly Income:%12s%7.2lf\n", "$", grossIncome);
+    printf("Niki's Gross Monthly Income:%15s%7.2lf\n", "$", NIKI);
 	printf("%50s\n", "--------");
-    printf("Combined Gross Income:%21s%.2lf\n\n", "$", grossIncome + NIKI);
+    printf("Combined Gross Income:%21s%7.2lf\n\n", "$", grossIncome + NIKI);
 
     //  Turn the gross income into pennies to make accurate calculations
     //  of money.
