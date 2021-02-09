@@ -83,7 +83,9 @@ char showMenu()
 
 double getGross(int hoursWorked, double rate)
 {
-    double grossIncome = hoursWorked * rate;
+    double grossIncome = 0;
+
+	grossIncome = hoursWorked * rate;
 
     return grossIncome;
 }
@@ -138,7 +140,7 @@ void doMenuAction(char userChoice, double *hourlyRate)
             break;
         
         case '2':
-            printf("Current hourly rate is set to $%.4lf.\n", *hourlyRate);
+            printf("Current hourly rate is set to $%.2lf.\n", *hourlyRate);
             break;
             
         case '3':
@@ -178,9 +180,10 @@ void titheAndFirstFruits(double rate)
     grossIncome = getGross(hoursWorked, rate);
 
     //  Display gross incomes.
-    printf("Forrest's Gross Monthly Income:\t\t$%.2lf\n", grossIncome);
-    printf("Niki's Gross Monthly Income:\t\t$%.2lf\n", NIKI);
-    printf("Combined Gross Income:\t\t\t$%.2lf\n\n", grossIncome + NIKI);
+    printf("Forrest's Gross Monthly Income:%12s%.2lf\n", "$", grossIncome);
+    printf("Niki's Gross Monthly Income:%15s%.2lf\n", "$", NIKI);
+	printf("%50s\n", "--------");
+    printf("Combined Gross Income:%21s%.2lf\n\n", "$", grossIncome + NIKI);
 
     //  Turn the gross income into pennies to make accurate calculations
     //  of money.
@@ -214,11 +217,11 @@ void titheAndFirstFruits(double rate)
     //  Display the First Fruits and Tithe.
     if (firstFruits % 100 < 10)
     {
-        printf("First Fruits 2.5%%:\t\t\t$%4d.0%d. Niki's is: $%.2lf.\n", dollars, cents, NIKI_FIRSTFRUITS);
+        printf("First Fruits 2.5%%:%25s%4d.0%d. Niki's is: $%6.2lf.\n", "$", dollars, cents, NIKI_FIRSTFRUITS);
     }
     else
     {
-        printf("First Fruits 2.5%%:\t\t\t$%4d.%d. Niki's is: $%.2lf.\n", dollars, cents, NIKI_FIRSTFRUITS);
+        printf("First Fruits 2.5%%:%25s%4d.%d. Niki's is: $%6.2lf.\n", "$", dollars, cents, NIKI_FIRSTFRUITS);
     }
 
     //  Convert the penny value of tithe into a "dollar" and "cent" value.
@@ -227,24 +230,27 @@ void titheAndFirstFruits(double rate)
     //  Tithe
     if (tithe % 100 < 10)
     {
-        printf("Tithe 10%%:\t\t\t\t$%4d.0%d. Niki's is: $%.2lf.\n", dollars, cents, NIKI_TITHE);
+        printf("Tithe 10%%:%33s%4d.0%d. Niki's is: $%6.2lf.\n", "$", dollars, cents, NIKI_TITHE);
     }
     else
     {
-        printf("Tithe 10%%:\t\t\t\t$%4d.%d. Niki's is: $%.2lf.\n", dollars, cents, NIKI_TITHE);
+        printf("Tithe 10%%:%33s%4d.%d. Niki's is: $%6.2lf.\n", "$", dollars, cents, NIKI_TITHE);
     }
 
     //  Convert the penny value of the net income into a "dollar" and "cent" value.
     convertToDollarsAndCents(&dollars, &cents, netIncome);
 
+	//	Separation of tithes and net income.
+	printf("%50s\n", "--------");
+
     //  Display the net income.
     if (netIncome % 100 < 10)
     {
-        printf("Net Income:\t\t\t\t$%4d.0%d.\n", dollars, cents);
+        printf("Net Income:%32s%4d.0%d.\n", "$", dollars, cents);
     }
     else
     {
-        printf("Net Income:\t\t\t\t$%4d.%d.\n", dollars, cents);
+        printf("Net Income:%32s%4d.%d.\n", "$", dollars, cents);
     }
 
     //  Determine if the user wants to continue running the program after
@@ -266,7 +272,7 @@ void titheAndFirstFruits(double rate)
                 break;
 
            default:
-               printf("That is not a valid option. Please enter 'y' or 'n'\n");
+               printf("That is not a valid option. Please enter 'y' or 'n'.\n");
                continueChoice[0] = '?';
                break;
         }
