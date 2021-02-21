@@ -121,7 +121,7 @@ int convertToPennies(double money)
 void changeHourlyRate(double *rate)
 {
     printf("%s", "Please enter the new hourly rate: ");
-    scanf("%lf", &*rate);
+    scanf("%lf", rate);
 }
 
 void convertToDollarsAndCents(int *dollars, int *cents, int pennies)
